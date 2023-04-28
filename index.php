@@ -20,9 +20,9 @@ $cronLastTime = $cronUpdate->getLastUpdate();
 
 
 
-// if (!$cronCSV->isCronTime($cronLastTime, $updateInterval)) {
+if (!$cronCSV->isCronTime($cronLastTime, $updateInterval)) {
     $cronCSV->start($connectConfig, $csvConfig);
     $cronUpdate->croneDone();
-// } else 
-//     $cronUpdate->croneFailed($cronLastTime + $updateInterval - time());
+} else 
+    $cronUpdate->croneFailed($cronLastTime + $updateInterval - time());
    
