@@ -1,5 +1,7 @@
 <?
 
+@include_once('error_output.php');
+
 define('AppDirectory', str_replace('\\', '/', __DIR__) . '/app');
 
 require_once('autoloader.php');
@@ -12,8 +14,8 @@ $connectConfig = $config['connection'];
 $csvConfig = $config['csv'];
 
 
-$cronUpdate = new \CronUpdate($connectConfig);
-$cronCSV = new \CronCSV();
+$cronUpdate = new \Cron\CronUpdate($connectConfig, $csvConfig['croninterval']);
+$cronCSV = new \Cron\CronCSV();
 
 $updateInterval = $csvConfig['croninterval'];
 $cronLastTime = $cronUpdate->getLastUpdate();
@@ -21,8 +23,6 @@ $cronLastTime = $cronUpdate->getLastUpdate();
 
 
 if (!$cronCSV->isCronTime($cronLastTime, $updateInterval)) {
-    $cronCSV->start($connectConfig, $csvConfig);
-    $cronUpdate->croneDone();
-} else 
+    $cronUpdate->tryStart([$cronCSV, 'start'], [$connectConfig, $csvConfig]);
+} else
     $cronUpdate->croneFailed($cronLastTime + $updateInterval - time());
-   
