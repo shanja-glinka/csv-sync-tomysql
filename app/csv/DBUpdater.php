@@ -5,7 +5,7 @@ namespace CSV;
 class DBUpdater extends \DB\Connection
 {
     protected $tableName = '';
-    protected $inertInterval = 10000;
+    protected $inertInterval = 100000;
 
     public function __construct($config, $tableName)
     {
@@ -35,7 +35,7 @@ class DBUpdater extends \DB\Connection
 
 
 
-    private function createInsertQueries($parsedCsv, &$insertQuery)
+    private function createInsertQueries(&$parsedCsv, &$insertQuery)
     {
         $insertQuery = array();
 
